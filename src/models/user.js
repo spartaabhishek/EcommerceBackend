@@ -1,5 +1,5 @@
 const mongoose=require('mongoose')
-
+const bcrypt=require('bcrypt')
 const userSchema=new mongoose.Schema({
     firstName:{
         type:String,
@@ -21,7 +21,7 @@ const userSchema=new mongoose.Schema({
         trim:true,
         unique:true,
         index:true,
-        lowercase:true
+        lowercase:true,   
     },
     email:{
         type:String,
@@ -32,14 +32,12 @@ const userSchema=new mongoose.Schema({
     },
     hash_password:{
         type:String,
-        required:true,
-        
+        required:false,
     },
     role:{
         type:String,
         enum:['user','admin'],
-        default:'admin'
-
+        default:'user'
     },
     contactNumber:{
         type:String,
@@ -50,6 +48,14 @@ const userSchema=new mongoose.Schema({
 
 },{timestamp:true})
 
-userSchema.virtual()
-
-module.exports=mongoose.model('User')
+userSchema.virtual('password').set(function(pass){
+    this.hash_password=bcrypt.hashSync(pass,10)
+    
+})
+// userSchema.method={
+//     authenticate: function(){
+//         return bcrypt.compareSync(password,this.hash_password)
+//     }
+// }
+const User=mongoose.model('users',userSchema)
+exports.User=User;
