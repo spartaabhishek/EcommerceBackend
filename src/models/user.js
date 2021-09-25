@@ -32,7 +32,7 @@ const userSchema=new mongoose.Schema({
     },
     hash_password:{
         type:String,
-        required:false,
+        required:true,
     },
     role:{
         type:String,
@@ -52,10 +52,14 @@ userSchema.virtual('password').set(function(pass){
     this.hash_password=bcrypt.hashSync(pass,10)
     
 })
-// userSchema.method={
-//     authenticate: function(){
-//         return bcrypt.compareSync(password,this.hash_password)
-//     }
-// }
+userSchema.virtual('fullName').get(function(){
+    return `${this.firstName} ${this.lastName}`
+})
+userSchema.methods={
+    authenticate: function(password){
+        return bcrypt.compareSync(password,this.hash_password)
+    }
+}
+
 const User=mongoose.model('users',userSchema)
 exports.User=User;
