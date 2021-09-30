@@ -15,6 +15,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    quantity: {
+      type: Number,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
@@ -24,13 +28,21 @@ const productSchema = new mongoose.Schema(
     productPictures: [{ img: { type: String } }],
     reviews: [
       {
-        type: mongoose.Schema.Types.ObjectId ,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         review: String,
       },
     ],
-    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     updatedAt: Date,
   },
   { timestamps: true }
