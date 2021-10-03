@@ -7,7 +7,7 @@ const adminRoutes = require("./routes/admin/auth");
 const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
-
+const path =require('path')
 //environment variable
 env.config();
 //mongodb connection
@@ -20,7 +20,7 @@ mongoose
     console.log("database created");
   });
 app.use(express.json());
-
+app.use('/public',express.static(path.join(__dirname,'uploads')))
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
